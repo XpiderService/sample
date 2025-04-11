@@ -1,30 +1,29 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>JS Greet App</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PHP Form Example</title>
 </head>
 <body>
 
-  <h1>Welcome to My JS App!</h1>
-  <p>Enter your name:</p>
+  <h1>Enter Your Name</h1>
 
-  <input id="nameInput" type="text" placeholder="Your name">
-  <button onclick="greet()">Greet Me</button>
-
-  <p id="output"></p>
-
-  <script>
-    function greet() {
-      const name = document.getElementById("nameInput").value;
-      const output = document.getElementById("output");
-      if (name.trim()) {
-        output.textContent = `Hello, ${name}! JavaScript says hi.`;
-      } else {
-        output.textContent = "Please enter your name.";
-      }
+  <?php
+    // Check if the form has been submitted
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+      // Retrieve the username from the form submission
+      $name = $_POST['username'] ?? 'Guest'; // Default to 'Guest' if no name is entered
+      echo "<h2>Hello, $name! Welcome to the PHP world!</h2>";
     }
-  </script>
+  ?>
+
+  <!-- The form for entering the name -->
+  <form action="" method="post">
+    <label for="username">Name:</label>
+    <input type="text" id="username" name="username" placeholder="Enter your name" required>
+    <button type="submit">Submit</button>
+  </form>
 
 </body>
 </html>
