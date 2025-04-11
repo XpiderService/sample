@@ -3,34 +3,70 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AJAX Demo</title>
+  <title>AJAX + System Info</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="bg-light p-5">
 
   <div class="container">
-    <h1 class="mb-4">User List</h1>
-    <button id="loadBtn" class="btn btn-primary mb-3">Load Users</button>
-    <ul id="userList" class="list-group"></ul>
+    <h1 class="mb-4">User Info + System Details</h1>
+    <button id="loadBtn" class="btn btn-primary mb-3">Load Data</button>
+    
+    <h4>User List</h4>
+    <ul id="userList" class="list-group mb-4"></ul>
+
+    <h4>Your Info</h4>
+    <ul id="sysInfo" class="list-group"></ul>
   </div>
 
   <script>
     document.getElementById("loadBtn").addEventListener("click", () => {
+      // Load user list from local JSON
       fetch("data.json")
         .then(res => res.json())
         .then(data => {
           const userList = document.getElementById("userList");
-          userList.innerHTML = ""; // Clear previous list
+          userList.innerHTML = "";
           data.users.forEach(user => {
             const li = document.createElement("li");
             li.className = "list-group-item";
             li.textContent = `${user.name} - ${user.email}`;
             userList.appendChild(li);
           });
-        })
-        .catch(err => {
-          console.error("Error loading data:", err);
         });
+
+      // Load IP and network info from external API
+      fetch("https://ipapi.co/json/")
+        .then(res => res.json())
+        .then(info => {
+          const sysInfo = document.getElementById("sysInfo");
+          sysInfo.innerHTML = `
+            <li class="list-group-item"><strong>IP Address:</strong> ${info.ip}</li>
+            <li class="list-group-item"><strong>ISP:</strong> ${info.org}</li>
+            <li class="list-group-item"><strong>City:</strong> ${info.city}</li>
+            <li class="list-group-item"><strong>Region:</strong> ${info.region}</li>
+            <li class="list-group-item"><strong>Country:</strong> ${info.country_name}</li>
+          `;
+        });
+
+      // Get device memory and storage estimate
+      const memory = navigator.deviceMemory || "Unavailable";
+      const sysInfo = document.getElementById("sysInfo");
+      const memLi = document.createElement("li");
+      memLi.className = "list-group-item";
+      memLi.innerHTML = `<strong>Estimated RAM:</strong> ${memory} GB`;
+      sysInfo.appendChild(memLi);
+
+      if (navigator.storage && navigator.storage.estimate) {
+        navigator.storage.estimate().then(estimate => {
+          const storageLi = document.createElement("li");
+          const used = (estimate.usage / (1024 ** 3)).toFixed(2);
+          const quota = (estimate.quota / (1024 ** 3)).toFixed(2);
+          storageLi.className = "list-group-item";
+          storageLi.innerHTML = `<strong>Storage Used:</strong> ${used} GB / ${quota} GB`;
+          sysInfo.appendChild(storageLi);
+        });
+      }
     });
   </script>
 
