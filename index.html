@@ -2,33 +2,29 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>PyScript Demo</title>
-  <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css">
-  <script defer src="https://pyscript.net/latest/pyscript.js"></script>
+  <title>JS Greet App</title>
 </head>
 <body>
 
-  <h1>Welcome to PyScript!</h1>
-  <p>Type your name and press Enter:</p>
+  <h1>Welcome to My JS App!</h1>
+  <p>Enter your name:</p>
 
   <input id="nameInput" type="text" placeholder="Your name">
-  <button id="greetBtn">Greet Me</button>
+  <button onclick="greet()">Greet Me</button>
 
   <p id="output"></p>
 
-  <py-script>
-    from js import document
-
-    def greet(event=None):
-        name = document.getElementById("nameInput").value
-        output = document.getElementById("output")
-        if name:
-            output.innerText = f"Hello, {name}! PyScript says hi."
-        else:
-            output.innerText = "Please enter a name."
-
-    document.getElementById("greetBtn").addEventListener("click", greet)
-  </py-script>
+  <script>
+    function greet() {
+      const name = document.getElementById("nameInput").value;
+      const output = document.getElementById("output");
+      if (name.trim()) {
+        output.textContent = `Hello, ${name}! JavaScript says hi.`;
+      } else {
+        output.textContent = "Please enter your name.";
+      }
+    }
+  </script>
 
 </body>
 </html>
