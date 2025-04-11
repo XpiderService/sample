@@ -1,11 +1,34 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html>
 <head>
-  <title>My Sample Site</title>
+  <meta charset="UTF-8">
+  <title>PyScript Demo</title>
+  <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css">
+  <script defer src="https://pyscript.net/latest/pyscript.js"></script>
 </head>
 <body>
-  <h1>Hello, GitHub Pages!</h1>
-  <p>This is my first static website.</p>
+
+  <h1>Welcome to PyScript!</h1>
+  <p>Type your name and press Enter:</p>
+
+  <input id="nameInput" type="text" placeholder="Your name">
+  <button id="greetBtn">Greet Me</button>
+
+  <p id="output"></p>
+
+  <py-script>
+    from js import document
+
+    def greet(event=None):
+        name = document.getElementById("nameInput").value
+        output = document.getElementById("output")
+        if name:
+            output.innerText = f"Hello, {name}! PyScript says hi."
+        else:
+            output.innerText = "Please enter a name."
+
+    document.getElementById("greetBtn").addEventListener("click", greet)
+  </py-script>
+
 </body>
 </html>
